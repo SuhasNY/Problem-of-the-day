@@ -1,0 +1,69 @@
+# Given a sorted (in ascending order) and rotated array arr of distinct elements which may be 
+# rotated at some point and given an element key, the task is to find the index of the given element 
+# key in the array arr. The whole array arr is given as the range to search.
+# Rotation shifts elements of the array by a certain number of positions, with elements 
+# that fall off one end reappearing at the other end.
+# Note:- 0-based indexing is followed & returns -1 if the key is not present.
+
+
+#User function Template for python3
+def findPivot(arr, low, high):
+    if arr[low] < arr[high]:
+        return 0
+    
+    while(low < high):
+        mid = int((low + high)/2)
+        if arr[mid] > arr[mid + 1]:
+            return mid + 1
+        elif arr[mid] > arr[high]:
+            low = mid + 1
+        else:
+            high = mid
+    
+    return -1
+    
+def binarySearch(arr, low, high, target):
+    while(low <= high):
+        mid = (low + high)//2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] > target:
+            high = mid - 1
+        else:
+            low = mid + 1
+            
+    return -1
+    
+class Solution:
+    def search(self,arr,key):
+        # Complete this function
+        piv = findPivot(arr, 0, len(arr)-1)
+        if piv == -1:
+            return -1
+        if arr[piv] == key:
+            return piv
+        
+        if piv == 0:
+            return binarySearch(arr, 0, len(arr) - 1, key)
+
+        if key >= arr[0]:
+            return binarySearch(arr, 0, piv - 1, key)
+        
+        else:
+            return binarySearch(arr, piv, len(arr) - 1, key)
+
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+
+if __name__ == '__main__':
+    t = int(input())
+
+    for _ in range(t):
+        A = list(map(int, input().strip().split()))
+        k = int(input())
+        ob = Solution()
+        print(ob.search(A, k))
+
+# } Driver Code Ends
